@@ -1,14 +1,13 @@
 #!/bin/bash
 message=${@:1}
 
-message="\" $message \""
+#message="\" $message \""
 echo "===============git adding==============="
 git add .
-echo "=============git completed=============="
+echo "=============git add completed=============="
 
 echo "===============git commiting==============="
-
-echo $message 
+ 
 git commit -m " $message "
 
 echo "===============git commit completed============"
