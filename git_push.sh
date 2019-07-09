@@ -1,7 +1,11 @@
 #!/bin/bash
 message=${@:1}
-
 #message="\" $message \""
+if [$message==""]
+then 
+	echo "please input message!"
+	exit
+fi
 echo "===============git adding==============="
 git add .
 echo "=============git add completed=============="
