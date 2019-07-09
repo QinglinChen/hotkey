@@ -1,14 +1,13 @@
 #!/bin/bash
 message=${@:1}
 echo $message
-MYDIR=`dirname $0`
 if [ -z "$message" ]
 then 
 	echo "please input message!"
 	exit
 fi
 echo "===============git adding==============="
-git add $MYDIR
+git add .
 echo "=============git add completed=============="
 
 echo "===============git commiting==============="
