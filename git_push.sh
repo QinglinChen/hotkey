@@ -1,6 +1,5 @@
 #!/bin/bash
 message=${@:1}
-#message="\" $message \""
 echo $message
 if [ -z "$message" ]
 then 
