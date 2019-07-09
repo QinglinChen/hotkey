@@ -2,7 +2,7 @@
 message=${@:1}
 #message="\" $message \""
 echo $message
-if [ $message = "" ]
+if [ -z $message ]
 then 
 	echo "please input message!"
 	exit
