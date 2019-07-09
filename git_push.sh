@@ -9,7 +9,7 @@ echo "=============git completed=============="
 echo "===============git commiting==============="
 
 echo $message 
-echo `git commit -m $message`
+git commit -m " $message "
 
 echo "===============git commit completed============"
 
