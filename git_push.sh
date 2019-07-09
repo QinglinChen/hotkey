@@ -1,12 +1,17 @@
 #!/bin/bash
+message=${@:1}
+
+message="\" $message \""
 echo "===============git adding==============="
 git add .
 echo "=============git completed=============="
 
 echo "===============git commiting==============="
-git commit -m $1
 
-echo "===============git commit completed==============="
+
+git commit -m $message
+
+echo "===============git commit completed============"
 
 echo "===============git pushing==============="
 git push origin master
