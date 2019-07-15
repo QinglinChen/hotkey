@@ -43,6 +43,7 @@ struct pos_ns_trie_node
 ## 5.实现的函数
 ```C
 void pos_ns_burst(struct pos_ns_trie_node *prev_trie_node, int prev_index);
+pos_get_superblock();
 ```
 ## 5.其他
 trie_root信息  
