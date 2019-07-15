@@ -40,5 +40,11 @@ struct pos_ns_trie_node
 ```
 ## 4.架构方式
 我是一个图
+## 5.实现的函数
+```C
+void pos_ns_burst(struct pos_ns_trie_node *prev_trie_node, int prev_index);
+```
 ## 5.其他
-trie_root信息
+trie_root信息  
+pfn  
+
