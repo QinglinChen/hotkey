@@ -1,9 +1,10 @@
+set nu
 syntax on
 " tab宽度和缩进同样设置为4
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-
+set backspace=2
 set nocompatible
 
 " 你在此设置运行时路径
@@ -16,8 +17,15 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'suan/vim-instant-markdown'
+Plugin 'skywind3000/vim-keysound'
 "所有插件都应该在这一行之前
 call vundle#end()
+
+let g:keysound_enable=1
+let g:keysound_theme='typewriter'
+let g:keysound_py_version = 3
+let g:keysound_volume=800
+
 
 " filetype off
 filetype plugin indent on
