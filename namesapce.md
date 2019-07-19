@@ -10,13 +10,25 @@ struct pos_ns_record *pos_ns_insert(struct pos_ns_trie_node *root,
 struct pos_ns_record *pos_ns_delete(struct pos_ns_trie_node *root,
 			const char *str, int str_length);
 ```
+我的上一层可以拿到一个持久的对象的描述符pos_descripter,需要操作持久对象元数据时修改pos_descropter中的对应数据即可。
+
+```c
+struct pos_descriptor
+{
+	struct list_head d_vm_list;
+	unsigned long prime_seg;
+	uid_t	d_uid;
+	gid_t	d_gid;
+	fmode_t d_mode;
+};
+```
 ### 3.实现的数据结构
 ```c
 struct pos_ns_record
 {
 	int str_length;
 	char *str;
-	struct pos_task_pid *task_list;	// This points volatile struct.
+	struct pos_task_pid *task_list;	// This points volatile struct.貌似这个可以不用
 	struct pos_descriptor *desc;
 	struct pos_ns_record *next;
 };
