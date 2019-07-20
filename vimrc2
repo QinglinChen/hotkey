@@ -26,6 +26,6 @@ let g:keysound_theme='typewriter'
 let g:keysound_py_version = 3
 let g:keysound_volume=800
 
-
+set so=6
 " filetype off
 filetype plugin indent on

@@ -24,6 +24,7 @@ struct pos_descriptor
 ```
 ### 3.实现的数据结构
 ```c
+#define pfn unsigned long long 
 struct pos_ns_record
 {
 	int str_length;
@@ -46,9 +47,10 @@ struct pos_ns_container
 
 struct pos_ns_trie_node
 {
-	int depth;			// depth field must be first one in this structure.
-	unsigned long ptrs[POS_ARRAY_LENGTH];
+	int depth;			//这个结构体中必须放在第一个，有其他用途（判断），创建po时检查长度是否超过128 
+	pfn ptrs[POS_ARRAY_LENGTH];//pos_array_length暂定128字符，'/'应该是不支持的,预想不用改变其他字符在数组中的位置，若有需要可以直接在'/'字符位置作其他用途，创建po时检查是否含有'/'
 };
+/*单个trie_node大小：4+8*128=1028B*/
 ```
 ## 4.架构方式
 我是一个图
