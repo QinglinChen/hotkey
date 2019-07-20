@@ -10,6 +10,7 @@ f,F在本页面打开链接或在新页面打开连接
 ctrl+a   ctrl+e   分别代表把管标移动到最后  
 ctrl+u   ctrl+k   分别代表光标处往前和光标处往后删除  
 ctrl+w   删除一个单词  
+eog 查看图片指令  
 # Vim：
 u撤回  
 ctrl+r继续上一步     
