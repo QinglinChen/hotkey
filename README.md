@@ -3,7 +3,22 @@
 关闭当前标签页	Ctrl + w 或 Ctrl + F4  
 打开新的标签页，并跳转到该标签页	Ctrl + t  
 跳转到下一个打开的标签页	Ctrl + Tab 或 Ctrl + PgDd  
-跳转到上一个打开的标签页	Ctrl + Shift + Tab 或 Ctrl + PgUp  
+跳转到上一个打开的标签页	Ctrl + Shift + Tab 或 Ctrl + PgUp   
+#### vmware
+在vmware中按ctrl+alt键，可以把焦点移出虚拟机，从而可以按alt+tab键移动。  
+在其他应用中时，按alt+tab进入vmware后，可以按ctrl+g重新把焦点移入虚拟机。
+## vimium插件
+按i进入插入模式的作用：使用网页原来的快捷键  
+f,F 在本窗口或者新窗口打开链接  
+H 后退  
+L 前进  
+J 左边的tab  
+K 右边的tab  
+x 关闭当前标签  
+X 恢复关闭的标签   
+o,O 在本窗口,新窗口打开一个链接  
+gf,gF 选择下一个框，main/top框  
+按v,V进入字符，行可视化模式以后，按c键可以进入caret模式，能够显示cursor
 ## vimum
 f,F在本页面打开链接或在新页面打开连接  
 # linux命令行：
