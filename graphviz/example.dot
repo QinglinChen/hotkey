@@ -1,0 +1,35 @@
+digraph demo {
+//    splines=false
+    compound=true;//指向子图
+    node [shape="record", height=.1]
+    node0[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node1[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node2[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node3[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node0:f0 -> node1:f
+    node0:f2 -> node2:f
+    node1:f2 -> node3:f
+    subgraph cluster_ab{
+	node [style=filled];
+	ove->ility->andon->out->solute;
+	color=red;
+	label="container";
+}
+    subgraph cluster_acc{
+	node [style=filled];
+	ept->ompany->ess->urate;
+	color=red;
+	label="container";
+}
+    subgraph cluster_ca{
+	node [style=filled];
+	r;
+	color=red;
+	label="container"
+}
+""[style=filled]
+node2:f0->r[lhead=cluster_ca];
+node1:f1->ove[lhead=cluster_ab];
+node3:f2->ept[lhead=cluster_acc];
+node2:f->"";
+}

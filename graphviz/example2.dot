@@ -1,0 +1,74 @@
+digraph demo {
+//    splines=false
+    compound=true;//指向子图
+    node [shape="record", height=.1]
+    node0[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node1[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node2[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node3[label="<f>|<f0>a | <f1> b | <f2>c| <f3>d|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    node0:f0 -> node1:f
+    node0:f2 -> node2:f
+    node1:f2 -> node3:f
+    node3:f2 -> node4:f
+    subgraph cluster_ab{
+	node [style=filled];
+	ove->ility->andon->out->solute;
+	color=red;
+	label="container";
+}
+subgraph cluster_burst{
+    node4[label="<f>|<f0>a | <f1> e | <f2>o| <f3>u|<f4>...|<f5>X|<f6>Y|<f7>Z"]
+    style=dotted;
+    label="newly created node and containers";
+    labelloc=b;
+    subgraph cluster_acce{
+	node [style=filled];
+	style=solid;
+	pt->ss;
+	label="container"
+	labelloc=t;
+}
+    subgraph cluster_acco{
+	style=solid;
+	node [style=filled];
+	mpany;
+	label="container"
+	labelloc=t;
+}
+    subgraph cluster_accu{
+	style=solid;
+	node [style=filled];
+	rate;
+	label="container"
+	labelloc=t;
+}
+
+}
+    subgraph cluster_acc{
+	style=dashed;
+	node [style=filled];
+	ept->ompany->ess->urate;
+	color=red;
+	label="container";
+}
+    subgraph cluster_ca{
+	node [style=filled];
+	r;
+	color=red;
+	label="container"
+}
+
+	
+""[style=filled]
+node2:f0->r[lhead=cluster_ca];
+node1:f1->ove[lhead=cluster_ab];
+//node3:f2->ept[lhead=cluster_acc];
+node4:f1->pt[lhead=cluster_acce];
+node4:f2->mpany[lhead=cluster_acco];
+node4:f3->rate[lhead=cluster_accu];
+node2:f->"";
+node4:f7->ept[lhead=cluster_acc,ltail=cluster_burst,dir=both,style=dotted,color=blue]
+}
+
+
+
