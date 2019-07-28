@@ -31,3 +31,4 @@ let g:netrw_liststyle = 3 "树型展示目录
 "let g:netrw_altv = 2 "想设置目录中文件的打开方式,还没搞好
 let g:netrw_winsize= 24   "目录宽度24字符
 filetype plugin indent on "打开基于文件类型的插件
+set showcmd "显示输入的命令
