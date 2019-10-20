@@ -9,21 +9,22 @@
 1.提供给上一层三个关于持久对象名操作的函数，上层可以通过这三个函数快速的新添、删除对象名并通过对象名快速的定位到持久对象的元数据信息。  
 预计提供给上层函数的形式：
 ```C
-struct pos_ns_record *pos_ns_search(const char *str, int str_length);
+struct po_ns_record *po_ns_search(const char *str, int str_length);
 //查找一个持久对象名是否已经存在的函数，如果存在返回这个对象的record,不存在则返回null。
-struct pos_ns_record *pos_ns_insert(const char *str, int str_legnth);
+struct po_ns_record *po_ns_insert(const char *str, int str_legnth);
 //创建一个新的持久对象名,如果持久对象已经存在或者申请内存失败返回null，插入成功则返回新纪录record的地址。
-struct pos_ns_record *pos_ns_delete(const char *str, int str_length);
+struct po_ns_record *po_ns_delete(const char *str, int str_length);
 //删除一个持久对象名，删除成功返回被被删除record的地址，删除失败返回null。
 ```
-我的上一层可以拿到一个持久的对象的描述符pos_descripter,需要操作持久对象元数据时修改pos_descropter中的对应数据即可。
+我的上一层可以拿到一个持久的对象的描述符po_desc,需要操作持久对象元数据时修改po_desc中的对应数据即可。
 ```c
-struct pos_descriptor
+struct po_desc
 {
-	struct list_head d_vm_list;//记录持久对象vma链表，vma链表与操作下一层实现，可以借助linux内核里的list嵌入式结构实现。
-	unsigned long long prime_seg;//记录持久对象的首地址。
-	uid_t	d_uid;//用户id
-	gid_t	d_gid;//组id
+	unsigned long long size;
+	struct po_chunk *data_pa;//pa means physical address
+	uid_t	uid;//用户id
+	gid_t	gid;//组id
+	umode_t mode;
 };
 /*暂时想到这些元数据项，如果有需要会继续添加*/
 ```
@@ -52,29 +53,28 @@ Burst-tries的访问字典树效率很高，但占用空间大，容器占用空
 暂时选择比较简单的burst判定方式：Limit判定方式。当某个容器中的record数量超过某一个阈值时，就对其进行burst操作，这个阈值之后确定。  
 Limit判定方式能够限制单个容器的搜索总成本，但没有考虑到容器中不同位置记录访问的频繁程度。其他复杂一些的判定方式有考虑到，现阶段先实现第一种。
 ## 4.具体实现
-### 4.1需要用到的数据结构
-数据结构中不能定义指针，用到指针的地方全部使用物理地址来代替，物理地址使用unsigned long long来表示。之后实现过程中可能会有频繁的物理地址与指针转换，指针和物理地址的使用习惯很不一样（例如unsigned long long无法像指针一样指向下一个相邻位置),有点不太方便。而且命名最好易于辨认一些，因为所有地址都变成了unsigned long long，命名不好辨认的话即便找到定义也难以理解指向的是什么结构。   
-1.定义一个记录全局信息的结构pos_super
+### 4.1需要用到的数据结构 
+1.定义一个记录全局信息的结构po_super
 ```c
-struct pos_super
+struct po_super
 {
-	unsigned long long trie_root;//trie node根结点
-	int ns_count //持久对象数量
-	int trie_node_count //trie node节点数
-	int trie_container_count //container数量
-}
+	struct po_ns_trie_node *trie_root;
+	int trie_node_count;
+	int container_count;
+	int po_count;
+};
 ```
 2.定义trie_node
 ```c
-struct pos_ns_trie_node
+struct po_ns_trie_node
 {
 	int depth;			//这个结构体中必须放在第一个，有其他用途（判断），创建po时检查长度是否超过128 
-	unsigned long long  ptrs[POS_ARRAY_LENGTH];//pos_array_length暂定128字符，'/'应该是不支持的,预想不用改变其他字符在数组中的位置，若有需要可以直接在'/'字符位置作其他用途，创建po时检查是否含有'/'
+	struct po_ns_trie_node *ptrs[PO_NS_LENGTH];//po_array_length暂定128字符，'/'应该是不支持的,预想不用改变其他字符在数组中的位置，若有需要可以直接在'/'字符位置作其他用途，创建po时检查是否含有'/'
 };
 ```
 3.定义container
 ```c
-struct pos_ns_container
+struct po_ns_container
 {
 	unsigned long long head;	//指向容器中的第一个record 
 	int cnt_limit; //记录容器中记录的数量
@@ -86,44 +86,44 @@ struct pos_ns_container
 ```
 4.定义与每个descripter对应的record
 ```c
-struct pos_ns_record
+struct po_ns_record
 {
-	int str_length;//record中的字符串长度，注意，是去掉前缀后的
+	int strlen;//record中的字符串长度，注意，是去掉前缀后的
 	char *str;//去掉前缀后的字符串剩余字符
-	unsigned long long desc;//指向每个record对应的descripter
-	unsigned long long next;//同一个container中的recorder用单链表组织
+	struct po_desc *desc; //指向每个record对应的descripter
+	struct po_ns_record *next;//同一个container中的recorder用单链表组织
 };
 ```
 ### 4.2需要实现的函数
 1.需要向上层提供的，2.2已经列出
 ```c
-struct pos_ns_record *pos_ns_search(const char *str, int str_length);
-struct pos_ns_record *pos_ns_insert(const char *str, int str_legnth);
-struct pos_ns_record *pos_ns_delete(const char *str, int str_length);
+struct po_ns_record *po_ns_search(const char *str, int strlen);
+struct po_ns_record *po_ns_insert(const char *str, int strlen);
+struct po_ns_record *po_ns_delete(const char *str, int strlen);
 ```
 2.还需要定义的
 ```c
-void pos_ns_init()
+void po_ns_init()
 ```
 初始化时的函数，初始化时就建立一个trie根节点，并初始化其他全局信息，只有系统初始化时会调用一次这个函数。
 ```c
-struct pos_ns_record *pos_ns_search_container(stuct pos_ns_container *container,int depth,const char *str,int str_len)
+struct po_ns_record *po_ns_search_container(stuct po_ns_container *container,int depth,const char *str,int str_len)
 ```
-在容器中搜索某条记录的函数，调用pos_ns_search时有可能用到，也可能用不到，因为一个record可以在container中，也可以直接在一个trie_node下,返回值为空或record的地址。传入depth函数的目的是可以利用&&短路让比较快一些。
+在容器中搜索某条记录的函数，调用po_ns_search时有可能用到，也可能用不到，因为一个record可以在container中，也可以直接在一个trie_node下,返回值为空或record的地址。传入depth函数的目的是可以利用&&短路让比较快一些。
 ```C
-void pos_insert_record(struct pos_ns_container,struct pos_ns_record);
+void po_insert_record(struct po_ns_container,struct po_ns_record);
 ```
-这个函数是将一个record插入到container中，pos_ns_insert时有可能会调用这个函数，也有可能不会调用，原因同上,若可在trie_node下直接插入即可
+这个函数是将一个record插入到container中，po_ns_insert时有可能会调用这个函数，也有可能不会调用，原因同上,若可在trie_node下直接插入即可
 ```c
-struct pos_ns_record *pos_ns_delete_record(struct pos_ns_container *container,int depth,const char *str,int str_length)
+struct po_ns_record *po_ns_delete_record(struct po_ns_container *container,int depth,const char *str,int str_length)
 ```
 在容器中删除一个记录，同样不一定会被调用，返回被删除的地址或空
 ```c
-int pos_ns_need_burst(struct pos_ns_container *container)
+int po_ns_need_burst(struct po_ns_container *container)
 ```
 判定是否需要burst的函数，到时候可以用宏定义的方式选择判定方式。若是需要burst返回1，不需要burst返回0。
 ```c
-void pos_ns_burst(struct pos_ns_trie_node *prev_trie_node,int prev_index)
+void po_ns_burst(struct po_ns_trie_node *prev_trie_node,int prev_index)
 ```
 burst的函数，传入的时容器连接的trie_node节点和容器所在的index，如果传入container难以向前找到trie_node。
 ## 5.其他
