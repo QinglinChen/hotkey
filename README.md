@@ -39,7 +39,8 @@ ctrl+shift+= 字体变大
 :x,ymz 移动第x到第y行至第z行下面  
 以上两条中的x,y都可以用一个数字x表示只选一行  
 :范围s/old/new[/g]  
-normal 模式下ctrl+a/x数字加减
+normal 模式下ctrl+a/x数字加减  
+ctrl+o光标的上个位置
 #### 分屏  
 $ Ctrl+W v  // 左右  
 $ Ctrl+W s  // 上下  
