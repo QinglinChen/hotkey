@@ -28,6 +28,8 @@ ctrl+a   ctrl+e   分别代表把管标移动到最后
 ctrl+u   ctrl+k   分别代表光标处往前和光标处往后删除  
 ctrl+w   删除一个单词  
 eog 查看图片指令  
+
+set -o vi 设置vim模式
 # Vim：
 u撤回  
 ctrl+r继续上一步     
@@ -42,8 +44,11 @@ ctrl+shift+= 字体变大
 :范围s/old/new[/g]  
 normal 模式下ctrl+a/x数字加减  
 ctrl+o光标的上个位置
+
 C D 到行末
+
 C和D的区别，一个进入insert 一个还是原来command
+
 d、c、y+i+[、{、“、（，对括号中的内容进行操作，eg：ci(
 #### 分屏  
 $ Ctrl+W v  // 左右  
@@ -71,9 +76,14 @@ di(
 di[
 # 寄存器
 无名寄存器，"
+
 通用寄存器，通过"[a-z]访问
+
 历史寄存器，“[0-9]
+
 查看内容，:reg
+
 文件名寄存器 ,"%
+
 insert mode :ctrl+r 访问寄存器
 
