@@ -22,6 +22,7 @@ gf,gF 选择下一个框，main/top框
 f,F在本页面打开链接或在新页面打开链接  
 g+i 可以将光标定位到输入栏中,按tab键可以切换输入框  
 t 可以打开一个新的标签页 
+
 # linux命令行：
 ctrl+a   ctrl+e   分别代表把管标移动到最后  
 ctrl+u   ctrl+k   分别代表光标处往前和光标处往后删除  
@@ -41,6 +42,9 @@ ctrl+shift+= 字体变大
 :范围s/old/new[/g]  
 normal 模式下ctrl+a/x数字加减  
 ctrl+o光标的上个位置
+C D 到行末
+C和D的区别，一个进入insert 一个还是原来command
+d、c、y+i+[、{、“、（，对括号中的内容进行操作，eg：ci(
 #### 分屏  
 $ Ctrl+W v  // 左右  
 $ Ctrl+W s  // 上下  
@@ -62,4 +66,14 @@ ctrl-w,shift-h 变为垂直分屏
 ctrl-w,shift-k 变为水平分屏
 # 修改屏幕尺寸
 $ Ctrl+W =/+/-
+# 快速删除括号内容
+di(
+di[
+# 寄存器
+无名寄存器，"
+通用寄存器，通过"[a-z]访问
+历史寄存器，“[0-9]
+查看内容，:reg
+文件名寄存器 ,"%
+insert mode :ctrl+r 访问寄存器
 
